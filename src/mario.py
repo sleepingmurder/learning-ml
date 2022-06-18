@@ -30,8 +30,7 @@ class SkipFrame(gym.Wrapper):
         """Repeat action, and sum reward"""
         total_reward = 0.0
         done = False
-        obs, reward, done, info = self.env.step(action)
-        """
+        #obs, reward, done, info = self.env.step(action)
         for i in range(self._skip):
             # Accumulate reward and repeat the same action
             obs, reward, done, info = self.env.step(action)
@@ -39,8 +38,7 @@ class SkipFrame(gym.Wrapper):
             if done:
                 break
         return obs, total_reward, done, info
-        """
-        return obs, reward, done, info
+        #return obs, reward, done, info
 
 
 class GrayScaleObservation(gym.ObservationWrapper):
@@ -85,7 +83,7 @@ class ResizeObservation(gym.ObservationWrapper):
 # Initialize Super Mario environment
 env = gym_super_mario_bros.make("SuperMarioBros-1-1-v0")
 env = JoypadSpace(env, COMPLEX_MOVEMENT)
-env = SkipFrame(env, skip = 2)
+env = SkipFrame(env, skip = 4)
 env = GrayScaleObservation(env)
 env = ResizeObservation(env, shape=84)
 env = FrameStack(env, num_stack=4)
@@ -124,7 +122,7 @@ class Mario:
         if self.use_cuda:
             self.net = self.net.to(device="cuda")
 
-        self.exploration_rate = 0.7
+        self.exploration_rate = 1
         self.exploration_rate_decay = 0.99999975
         self.exploration_rate_min = 0.1
         self.curr_step = 0
@@ -142,8 +140,8 @@ class Mario:
     """
         # EXPLORE
         if np.random.rand() < self.exploration_rate:
-            #action_idx = np.random.randint(self.action_dim)
-            action_idx = np.random.choice(len(COMPLEX_MOVEMENT))
+            action_idx = np.random.randint(self.action_dim)
+            #action_idx = np.random.choice(len(COMPLEX_MOVEMENT))
 
         # EXPLOIT
         else:
