@@ -25,11 +25,12 @@ from gym_super_mario_bros.actions import COMPLEX_MOVEMENT, SIMPLE_MOVEMENT
 from SkipFrame import SkipFrame
 from GrayScaleObervation import GrayScaleObservation
 from ResizeObservation import ResizeObservation
-from Mario import Mario
+from mario import Mario
 
 # Apply Wrappers to environment
 # Initialize Super Mario environment
 env = gym_super_mario_bros.make("SuperMarioBros-1-1-v0")
+env = JoypadSpace(env, COMPLEX_MOVEMENT)
 env = SkipFrame(env, skip = 4)
 env = GrayScaleObservation(env)
 env = ResizeObservation(env, shape=84)
@@ -147,9 +148,8 @@ mario = Mario(state_dim=(4, 84, 84), action_dim=env.action_space.n, save_dir=sav
 
 logger = MetricLogger(save_dir)
 
-episodes = 2
+episodes = 50000
 for e in range(episodes):
-    print(f"episode {e}\n")
     state = env.reset()
 
     # Play the game!

@@ -131,13 +131,13 @@ class Mario:
 
     def act(self, state):
         """
-    Given a state, choose an epsilon-greedy action and update value of step.
+        Given a state, choose an epsilon-greedy action and update value of step.
 
-    Inputs:
-    state(LazyFrame): A single observation of the current state, dimension is (state_dim)
-    Outputs:
-    action_idx (int): An integer representing which action Mario will perform
-    """
+        Inputs:
+        state(LazyFrame): A single observation of the current state, dimension is (state_dim)
+        Outputs:
+        action_idx (int): An integer representing which action Mario will perform
+        """
         # EXPLORE
         if np.random.rand() < self.exploration_rate:
             action_idx = np.random.randint(self.action_dim)
@@ -165,6 +165,7 @@ class Mario:
 class Mario(Mario):  # subclassing for continuity
     def __init__(self, state_dim, action_dim, save_dir):
         super().__init__(state_dim, action_dim, save_dir)
+        #self.memory = deque(maxlen=10000)
         self.memory = deque(maxlen=10000)
         self.batch_size = 32
         self.gamma = 0.9
@@ -429,9 +430,8 @@ mario = Mario(state_dim=(4, 84, 84), action_dim=env.action_space.n, save_dir=sav
 
 logger = MetricLogger(save_dir)
 
-episodes = 10
+episodes = 50000
 for e in range(episodes):
-    print(f"episode {e}\n")
     state = env.reset()
 
     # Play the game!

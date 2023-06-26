@@ -25,7 +25,7 @@ class Mario:
         self.save_dir = save_dir
 
         self.use_cuda = torch.cuda.is_available()
-        self.use_cuda = False
+        #self.use_cuda = False
 
         # Mario's DNN to predict the most optimal action - we implement this in the Learn section
         self.net = MarioNet(self.state_dim, self.action_dim).float()
